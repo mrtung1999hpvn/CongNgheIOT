@@ -1,0 +1,9 @@
+## dương chân arduino chân 9 và âm GNU
+
+void setup()
+{
+  pinMode(9,OUTPUT);
+}
+void loop(){
+  digitalWrite(9,HIGH);
+}
