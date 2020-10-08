@@ -30,7 +30,7 @@ void loop() {
 void Clear()
 {
   digitalWrite(3, HIGH);
-  digitalWrite(4, HIGH);
+  digitalWrite(4, HIGH); 
   digitalWrite(5, HIGH);
   digitalWrite(6, HIGH);
   digitalWrite(7, HIGH);
