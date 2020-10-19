@@ -1,0 +1,62 @@
+/* Controlling LED using Firebase console by CircuitDigest(www.circuitdigest.com) */
+#include <ESP8266WiFi.h>                                                
+#include <FirebaseArduino.h>                                             
+
+#define FIREBASE_HOST "bt-battatled.firebaseio.com"                         //host tren firebase 
+#define FIREBASE_AUTH "goUvbdVQ7T9pwMluRuoV0K1CnBP5L4ZLoUkWIYD1"      //Auth tren firebase google               
+#define WIFI_SSID ""                                   // Ten Wifi       
+#define WIFI_PASSWORD ""                                    //Pass wifi
+
+String LED_D3 = "";    // Biến nhận dữ liệu
+String LED_D4 = "";   // Biến nhận dữ liệu
+int ledD3 = D3;  // Sử dụng chân D3 đấu vào dương của đèn và âm đèn vào chân GND
+int ledD4 = D4;  //// Sử dụng chân D4 đấu vào dương của đèn và âm đèn vào chân GND
+void setup() {
+  Serial.begin(9600);
+  delay(1000);      
+  pinMode(ledD3, OUTPUT);
+  pinMode(ledD4, OUTPUT);              
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);                                      //try to connect with wifi
+  Serial.print("Connecting to ");
+  Serial.print(WIFI_SSID);
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
+  Serial.print("Connected to ");
+  Serial.println(WIFI_SSID);
+  Serial.print("IP Address is : ");
+  Serial.println(WiFi.localIP());                                                      //print local IP address
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);                                       // connect to firebase
+  
+}
+
+void loop() {
+  LED_D3 = Firebase.getString("BatTatLed/LED_D3"); //  Lấy dữ liệu của đèn LED_D3 BatTatLed/LED_D3
+  LED_D4 = Firebase.getString("BatTatLed/LED_D4"); // Lấy dữ liệu của đèn LED_D4 BatTatLed/LED_D4
+  // DuLieu JSON 
+  //[ "BatTatLed":
+  //    { "LED_D3":"on","LED_D4":"off"}
+  //]
+  // Các câu lệnh check String xem có bật hay tắt đèn
+  if (LED_D3 == "on") {                                                          
+    Serial.println("LED_D3 Turned ON");                                                                          
+    digitalWrite(ledD3, HIGH);                                                         
+  } 
+  else if (LED_D3 == "off") {                                                  
+    Serial.println("LED_D3 Turned OFF");                                             
+    digitalWrite(ledD3, LOW);                                                         
+  }
+  if (LED_D4 == "on") {                                                          
+    Serial.println("LED_D4 Turned ON");                                                                         
+    digitalWrite(ledD4, HIGH);                                                        
+  } 
+  else if (LED_D4 == "off") {                                                  
+    Serial.println("LED_D4 Turned OFF");                                             
+    digitalWrite(ledD4, LOW);                                                         
+  }
+  else {
+    Serial.println("Loi");
+  }
+}
