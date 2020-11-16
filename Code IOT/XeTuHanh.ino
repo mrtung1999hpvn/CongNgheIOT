@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <Servo.h>          //Servo motor library. This is standard library
 #include <NewPing.h>        //Ultrasonic sensor function library. You must install this library
-String c="";
+String ThaoTac="";
 //our L298N control pins
 const int LeftMotorForward = 7; // -> INPUT 1
 const int LeftMotorBackward = 6;  // -> INPUT 2
@@ -64,8 +64,6 @@ void loop(){
 //#define Chan9 9 <- D4
     */
     //moveForward();
-    String ThaoTac = c;
-    Serial.print(c);
     if(ThaoTac=="down")
     {
       Serial.print("DOWN\n");
@@ -247,8 +245,7 @@ void turnLeft(){
 void receiveEvent(int howMany) {
   while (0 < Wire.available()) {
     char _c = Wire.read();      /* receive byte as a character */
-    c += _c;
-    Serial.print(c);
+    ThaoTac  = String(ThaoTac + _c);
   }
 }
 
